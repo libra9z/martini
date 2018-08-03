@@ -19,11 +19,17 @@ func Logger() Handler {
 			}
 		}
 
-		log.Printf("Started %s %s for %s", req.Method, req.URL.Path, addr)
+		if req.URL.String() != "/health" {
+			log.Printf("Started %s %s for %s", req.Method, req.URL.Path, addr)
+
+		}
 
 		rw := res.(ResponseWriter)
 		c.Next()
 
-		log.Printf("Completed %v %s in %v\n", rw.Status(), http.StatusText(rw.Status()), time.Since(start))
+		if req.URL.String() != "/health" {
+			log.Printf("Completed %v %s in %v\n", rw.Status(), http.StatusText(rw.Status()), time.Since(start))
+
+		}
 	}
 }
